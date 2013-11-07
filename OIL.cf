@@ -1,0 +1,181 @@
+entrypoints ImplementationDefinition, File;
+
+File. File ::= OilVersion ImplementationDefinition ApplicationDefinition;
+
+OilVersion. OilVersion ::= "OIL_VERSION" "=" Version Description ";" ;
+
+Version.Version ::= String ;
+
+ImplDef.ImplementationDefinition ::= 
+  "IMPLEMENTATION" Name "{" [ImplementationSpec] "}" Description ";" ;
+
+separator ImplementationSpec "" ;
+
+ImplSpec.ImplementationSpec ::= 
+  Object "{" [ImplementationDef] "}" Description ";" ;
+
+OS.      Object ::= "OS" ;
+TASK.    Object ::= "TASK" ;
+COUNTER. Object ::= "COUNTER" ;
+ALARM.   Object ::= "ALARM" ;
+RESOURCE.Object ::= "RESOURCE" ;
+EVENT.   Object ::= "EVENT" ;
+ISR.     Object ::= "ISR" ;
+MESSAGE. Object ::= "MESSAGE" ;
+COM.     Object ::= "COM" ;
+NM.      Object ::= "NM" ;
+NM.      Object ::= "NETWORKMESSAGE" ;
+APPMODE. Object ::= "APPMODE" ;
+IPDU.    Object ::= "IPDU" ;
+
+ImplLEmpty. ImplementationList ::= ;
+ImplLDef.   ImplementationList ::=
+  ImplementationList ImplementationDef ;
+
+separator ImplementationDef "" ;
+
+ImplDefAttr. ImplementationDef ::= ImplAttrDef ;
+ImplDefRef.  ImplementationDef ::= ImplRefDef ;
+
+UINT32. ImplAttrDef ::= 
+  "UINT32" AutoSpecifier NumberRange AttributeName 
+  MultipleSpecifier DefaultNumber Description ";" ;
+INT32.  ImplAttrDef ::=
+  "INT32" AutoSpecifier NumberRange AttributeName 
+  MultipleSpecifier DefaultNumber Description ";" ;
+UINT64. ImplAttrDef ::= 
+  "UINT64" AutoSpecifier NumberRange AttributeName 
+  MultipleSpecifier DefaultNumber Description ";" ;
+INT64.  ImplAttrDef ::=
+  "INT64" AutoSpecifier NumberRange AttributeName 
+  MultipleSpecifier DefaultNumber Description ";" ;
+FLOAT.  ImplAttrDef ::=
+  "FLOAT" AutoSpecifier FloatRange AttributeName 
+  MultipleSpecifier DefaultFloat Description ";" ;
+ENUM.  ImplAttrDef ::=
+  "ENUM" AutoSpecifier Enumeration AttributeName 
+  MultipleSpecifier DefaultName Description ";" ;
+STRING.ImplAttrDef ::=
+  "STRING" AutoSpecifier AttributeName 
+  MultipleSpecifier DefaultString Description ";" ;
+BOOL.  ImplAttrDef ::=
+  "BOOLEAN" AutoSpecifier BoolValues AttributeName 
+  MultipleSpecifier DefaultBool Description ";" ;
+
+ImplPLE. ImplParameterList ::= ;
+ImplPLL. ImplParameterList ::= "{" [ImplementationDef] "}" ;
+
+NoAutoSpec. AutoSpecifier ::= ;
+WithAuto.   AutoSpecifier ::= "WITH_AUTO" ;
+
+NoNumRange.  NumberRange ::= ;
+FromToRange. NumberRange ::= "[" Number ".." Number "]" ;
+NumbersRange.NumberRange ::= "[" [Number] "]" ;
+
+separator Number "," ;
+
+NoNumber.  DefaultNumber ::= ;
+ANumber.   DefaultNumber ::= "=" Number ;
+NoDefault. DefaultNumber ::= "=" "NO_DEFAULT" ;
+AutoNumber.DefaultNumber ::= "=" "AUTO" ;
+
+NoDescription. Description ::= ;
+Description.   Description ::= ":" String ;
+
+NoFloatRange. FloatRange ::= ;
+FloatRange.   FloatRange ::= "[" FloatingPoint ".." FloatingPoint "]" ;
+
+NoFloat.    DefaultFloat ::= ;
+AFloat.     DefaultFloat ::= "=" FloatingPoint ;
+NoDefaultF. DefaultFloat ::= "=" "NO_DEFAULT" ;
+
+Enum. Enumeration ::= "[" [Enumerator] "]" ;
+
+separator Enumerator "," ;
+
+Plain. Enumerator ::= Name Description ;
+ImplP. Enumerator ::= Name ImplParameterList Description ;
+
+NoBoolValues. BoolValues ::= ;
+BoolValues.   BoolValues ::= "[" "TRUE"  ImplParameterList Description ","
+                                 "FALSE" ImplParameterList Description "]" ;
+
+NoName.        DefaultName ::= ;
+AName.         DefaultName ::= "=" Name ;
+NoDefaultName. DefaultName ::= "=" "NO_DEFAULT" ;
+AutoName.      DefaultName ::= "=" "AUTO" ;
+
+NoString.        DefaultString ::= ;
+AString.         DefaultString ::= "=" String ;
+NoDefaultString. DefaultString ::= "=" "NO_DEFAULT" ;
+AutoString.      DefaultString ::= "=" "AUTO" ;
+
+NoBool.        DefaultBool ::= ;
+ABool.         DefaultBool ::= "=" Boolean ;
+NoDefaultBool. DefaultBool ::= "=" "NO_DEFAULT" ;
+AutoBool.      DefaultBool ::= "=" "AUTO" ;
+
+ImplRefDefC. ImplRefDef ::= 
+  ObjectRefType ReferenceName MultipleSpecifier Description ";" ;
+
+OS_TYPE.      ObjectRefType ::= "OS_TYPE" ;
+TASK_TYPE.    ObjectRefType ::= "TASK_TYPE" ;
+COUNTER_TYPE. ObjectRefType ::= "COUNTER_TYPE" ;
+ALARM_TYPE.   ObjectRefType ::= "ALARM_TYPE" ;
+RESOURCE_TYPE.ObjectRefType ::= "RESOURCE_TYPE" ;
+EVENT_TYPE.   ObjectRefType ::= "EVENT_TYPE" ;
+ISR_TYPE.     ObjectRefType ::= "ISR_TYPE" ;
+MESSAGE_TYPE. ObjectRefType ::= "MESSAGE_TYPE" ;
+COM_TYPE.     ObjectRefType ::= "COM_TYPE" ;
+NM_TYPE.      ObjectRefType ::= "NM_TYPE" ;
+NM_TYPE.      ObjectRefType ::= "NETWORKMESSAGE_TYPE" ;
+APPMODE_TYPE. ObjectRefType ::= "APPMODE_TYPE" ;
+IPDU_TYPE.    ObjectRefType ::= "IPDU_TYPE" ;
+
+RefName. ReferenceName ::= Name ;
+Obj.     ReferenceName ::= Object ;
+
+Single.   MultipleSpecifier ::= ;
+Multiple. MultipleSpecifier ::= "[" "]" ;
+
+AppDef. ApplicationDefinition ::=
+  "CPU" Name "{" [ObjectDefinition] "}" Description ";" ;
+
+separator ObjectDefinition "" ;
+
+ObjDef.    ObjectDefinition ::= ObjectName Description ";" ;
+ObjParDef. ObjectDefinition ::= ObjectName "{" [Parameter] "}" Description ";" ;
+
+ObjName. ObjectName ::= Object Name ;
+
+separator Parameter "" ;
+
+Parameter.Parameter ::= AttributeName "=" AttributeValue Description ";" ;
+
+AttrName. AttributeName ::= Name ;
+AttrObj.  AttributeName ::= Object ;
+
+AttrValName.  AttributeValue ::= Name ;
+AttrValPName. AttributeValue ::= Name "{" [Parameter] "}" ;
+AttrValBool.  AttributeValue ::= Boolean ;
+AttrValPBool. AttributeValue ::= Boolean "{" [Parameter] "}" ;
+AttrValNum.   AttributeValue ::= Number ;
+AttrValFloat. AttributeValue ::= FloatingPoint ;
+AttrValString.AttributeValue ::= String ;
+AttrValAuto.  AttributeValue ::= "AUTO" ;
+
+FALSE. Boolean ::= "FALSE" ;
+TRUE.  Boolean ::= "TRUE" ;
+
+Name . Name ::= Ident ;
+
+DecNumber. Number ::= Dec ;
+HexNumber. Number ::= Hex ;
+
+token FloatingPoint ('+'|'-')? digit+ '.' digit+ ('e' ('+'|'-')? digit+ | 'E' ('+'|'-')? digit+)? ;
+
+token Dec ('+'|'-')? digit+ ;
+token Hex (digit | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F')+ ;
+
+comment "/*" "*/" ;
+comment "//" ;
